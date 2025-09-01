@@ -215,6 +215,8 @@ def transfer_money(
     if sender.balance < amount:
         raise HTTPException(status_code=400, detail="Insufficient balance")
     
+    if sender_user_id == recipient_user_id:
+        raise HTTPException(status_code=400, detail="Cannot transfer to self")
     # Deduct from sender
     sender.balance -= amount
     sender.updated_at = datetime.datetime.utcnow()
